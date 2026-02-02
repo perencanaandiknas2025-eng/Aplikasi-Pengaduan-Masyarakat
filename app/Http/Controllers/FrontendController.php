@@ -109,7 +109,19 @@ class FrontendController extends Controller
     public function add_complaint()
     {
         if (Session::get('nik') != NULL) {
-            $data['categories'] = Category::all();
+            try {
+                $data['categories'] = Category::all();
+            } catch (\Exception $e) {
+                // Fallback jika table belum ada
+                $data['categories'] = collect([
+                    (object)['id' => 1, 'name' => 'Fasilitas Sekolah'],
+                    (object)['id' => 2, 'name' => 'Kurikulum dan Pembelajaran'],
+                    (object)['id' => 3, 'name' => 'Tenaga Pendidik'],
+                    (object)['id' => 4, 'name' => 'Administrasi'],
+                    (object)['id' => 5, 'name' => 'Keamanan'],
+                    (object)['id' => 6, 'name' => 'Lainnya'],
+                ]);
+            }
             return view('frontend.complaint.add', $data);
         } else {
             return redirect('/');
