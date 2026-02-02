@@ -1,5 +1,5 @@
 @extends('admin.layouts.main')
-@section('title','Laporan Harian')
+@section('title','Laporan CERDIK - Laporan Harian')
 @section('css')
 <link href="{{asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
@@ -225,11 +225,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">Laporan Harian</h4>
+                    <h4 class="mb-sm-0 font-size-18">Laporan CERDIK - Laporan Harian</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item active">Laporan Harian</li>
+                            <li class="breadcrumb-item active">Laporan CERDIK - Laporan Harian</li>
                         </ol>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                             <div class="search-card">
                                 <div class="card-header">
                                     <h5 class="mb-0">
-                                        <i class="bx bx-search"></i> Pencarian Laporan Harian
+                                        <i class="bx bx-search"></i> Pencarian Laporan CERDIK - Laporan Harian
                                     </h5>
                                 </div>
                                 <div class="card-body">
@@ -336,7 +336,7 @@
                 <div class="table-card">
                     <div class="card-header">
                         <h5 class="mb-0">
-                            <i class="bx bx-table"></i> Data Laporan Harian
+                            <i class="bx bx-table"></i> Data Laporan CERDIK - Laporan Harian
                             @if(Request::get('date1') && Request::get('date2'))
                             <span class="badge bg-light text-dark ms-2" style="font-size: 0.9rem; font-weight: 600; padding: 8px 12px;">
                                 <i class="bx bx-calendar"></i> {{Request::get('date1')}} - {{Request::get('date2')}}

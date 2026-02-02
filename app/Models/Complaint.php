@@ -22,4 +22,9 @@ class Complaint extends Model
     {
         return $this->hasOne(Response::class, 'complaint_id', 'id');
     }
+
+    public function Category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
 }

@@ -101,6 +101,17 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
+                        <label for="category_id" class="col-md-3 col-form-label">Kategori Pengaduan</label>
+                        <div class="col-md-9">
+                            <select class="form-select" id="category_id" name="category_id" required>
+                                <option value="">-- Pilih Kategori --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
                         <label for="photo" class="col-md-3 col-form-label">Foto</label>
                         <div class="col-md-9">
                             <input class="form-control" type="file" id="photo" name="photo" required>

@@ -87,7 +87,7 @@
                                             <small><span>(Lewati Jika Tidak Diubah)</span></small>
                                             @if($user->photo)
                                                 <br><br>
-                                                <img src="{{ asset('assets/avatar/' . $user->photo) }}" alt="Current Photo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                                                <img src="{{ url('avatar/' . $user->photo) }}" alt="Current Photo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
                                             @endif
                                         </div>
                                     </div>

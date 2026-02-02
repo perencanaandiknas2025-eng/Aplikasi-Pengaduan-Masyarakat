@@ -69,6 +69,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td>Kategori</td>
+                                                    <td>
+                                                        <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{$complaint->Category ? $complaint->Category->name : 'N/A'}}</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td>Nomor Telepon</td>
                                                     <td>
                                                         <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{$complaint->Society->phone_number}}</a>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Complaint;
 use App\Models\Response;
 use App\Models\Society;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -108,8 +109,8 @@ class FrontendController extends Controller
     public function add_complaint()
     {
         if (Session::get('nik') != NULL) {
-            # code...
-            return view('frontend.complaint.add');
+            $data['categories'] = Category::all();
+            return view('frontend.complaint.add', $data);
         } else {
             return redirect('/');
         }
@@ -119,6 +120,7 @@ class FrontendController extends Controller
     {
         $this->validate($request, [
             'contents_of_the_report' => 'required|min:2',
+            'category_id' => 'required|exists:categories,id',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $nik = Session::get('nik');
@@ -126,6 +128,7 @@ class FrontendController extends Controller
         $complaint = new Complaint;
 
         $complaint->contents_of_the_report = $request->contents_of_the_report;
+        $complaint->category_id = $request->category_id;
         $photo = $request->file('photo');
         $tujuan_upload = 'avatar_complaint';
         $photo_name = time() . "_" . $photo->getClientOriginalName();

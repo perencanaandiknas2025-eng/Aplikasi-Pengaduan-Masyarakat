@@ -325,6 +325,7 @@
                 <tr role="row">
                     <th role="columnheader" scope="col">No.</th>
                     <th role="columnheader" scope="col">Nama Pelapor</th>
+                    <th role="columnheader" scope="col">Kategori</th>
                     <th role="columnheader" scope="col"><i class="bx bx-image" style="margin-right: 4px;"></i>Foto</th>
                     <th role="columnheader" scope="col">Tanggal Pengaduan</th>
                     <th role="columnheader" scope="col">Status</th>
@@ -336,6 +337,7 @@
                     <tr role="row">
                         <td role="cell" scope="row" itemprop="position">{{$loop->iteration}}</td>
                         <td role="cell" itemprop="author">{{ $row->society ? $row->society->name : 'N/A' }}</td>
+                        <td role="cell">{{ $row->Category ? $row->Category->name : 'N/A' }}</td>
                         <td role="cell">
                             @if($row->photo && !empty($row->photo) && file_exists(public_path('avatar_complaint/' . $row->photo)))
                                 <img src="{{asset('avatar_complaint/' . $row->photo)}}"

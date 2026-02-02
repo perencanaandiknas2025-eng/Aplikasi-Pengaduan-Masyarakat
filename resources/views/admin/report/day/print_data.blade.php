@@ -74,8 +74,10 @@
                     <tr class="success"><td colspan="7" style="font-family: sans-serif;text-align: center;">
 
                         <div style="text-align: center;">
-                            <h3>Laporan Harian </h3>
-                            <h3>Sistem Pengaduan Masyarakat</h3>
+                            <h3>LAPORAN</h3>
+                            <h3>CERDIK</h3>
+                            <h3>Center for Education Reporting & Digital Complaints</h3>
+                            <h4>(Pusat Pelaporan dan Pengaduan Digital Pendidikan)</h4>
                             @if(Request::get('date1') && Request::get('date2'))
                             <p style="margin: 10px 0; font-size: 14px;">Periode: {{Request::get('date1')}} - {{Request::get('date2')}}</p>
                             @endif
