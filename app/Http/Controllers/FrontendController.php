@@ -132,7 +132,7 @@ class FrontendController extends Controller
     {
         $this->validate($request, [
             'contents_of_the_report' => 'required|min:2',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|integer',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $nik = Session::get('nik');
@@ -150,14 +150,18 @@ class FrontendController extends Controller
         $complaint->date_complaint = Date::now()->format('Y-m-d');
         $complaint->nik = $nik;
         $complaint->society_id = $society;
-        $complaint->save();
-        $complaint_id = $complaint->id;
+        try {
+            $complaint->save();
+            $complaint_id = $complaint->id;
 
-        $response = new Response;
-        $response->complaint_id = $complaint_id;
-        $response->save();
+            $response = new Response;
+            $response->complaint_id = $complaint_id;
+            $response->save();
 
-        return redirect()->route('user_home')->with(['success' => 'Complaint has been saved !']);
+            return redirect()->route('user_home')->with(['success' => 'Complaint has been saved !']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => 'Failed to save complaint: ' . $e->getMessage()]);
+        }
     }
     public function complaint()
     {
