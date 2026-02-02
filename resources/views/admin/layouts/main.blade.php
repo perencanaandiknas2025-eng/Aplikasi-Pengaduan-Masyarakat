@@ -11,9 +11,6 @@
                 <div data-simplebar class="h-100">
                     <div id="sidebar-menu">
                         <ul class="metismenu list-unstyled" id="side-menu">
-                            <div class="text-center mb-3">
-                                <img src="{{ asset('assets/images/logo_sistem.png') }}" alt="Logo Sistem" style="width: 80px; height: auto;">
-                            </div>
                             <li class="menu-title" key="t-menu">Main Menu</li>
                             <li>
                                 <a href="{{route('dashboard.index')}}" class="waves-effect">
