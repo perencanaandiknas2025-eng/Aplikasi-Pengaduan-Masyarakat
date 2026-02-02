@@ -160,7 +160,8 @@ class FrontendController extends Controller
 
             return redirect()->route('user_home')->with(['success' => 'Complaint has been saved !']);
         } catch (\Exception $e) {
-            return redirect()->back()->with(['error' => 'Failed to save complaint: ' . $e->getMessage()]);
+            \Log::error('Error saving complaint: ' . $e->getMessage());
+            return redirect()->back()->with(['error' => 'Gagal menyimpan pengaduan: ' . $e->getMessage()])->withInput();
         }
     }
     public function complaint()
