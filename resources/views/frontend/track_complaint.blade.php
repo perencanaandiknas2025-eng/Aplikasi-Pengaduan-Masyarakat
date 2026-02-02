@@ -79,7 +79,7 @@
     #hero {
       min-height: 90vh;
       background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)),
-        url('{{ asset("frontend/assets/img/hero-bg.jpg") }}') center/cover no-repeat;
+        url('{{ asset("frontend/assets/img/background.jpeg") }}') center/cover no-repeat;
       display: flex;
       align-items: center;
       color: #fff;

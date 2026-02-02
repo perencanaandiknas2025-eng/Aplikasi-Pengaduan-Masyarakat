@@ -83,7 +83,7 @@
     #hero {
       width: 100%;
       height: 40vh;
-      background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url("{{ asset('frontend/assets/img/hero-bg.jpg') }}");
+      background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url("{{ asset('frontend/assets/img/background.jpeg') }}");
       background-size: cover;
       background-position: center;
       display: flex;
