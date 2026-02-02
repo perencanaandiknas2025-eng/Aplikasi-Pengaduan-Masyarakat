@@ -95,7 +95,14 @@
                                                 <tr>
                                                     <td>Foto</td>
                                                     <td>
-                                                        <img src="{{url('avatar_complaint/',$complaint->photo)}}" width="500px">
+                                                        @if($complaint->photo && file_exists(public_path('avatar_complaint/' . $complaint->photo)))
+                                                            <img src="{{ asset('avatar_complaint/' . $complaint->photo) }}" alt="Foto Bukti Pengaduan" style="max-width: 500px; height: auto; border-radius: 8px; border: 2px solid #e9ecef;">
+                                                        @else
+                                                            <div style="width: 200px; height: 150px; border-radius: 8px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border: 2px solid #e9ecef;">
+                                                                <i class="bx bx-image" style="font-size: 48px; color: #6c757d;"></i>
+                                                            </div>
+                                                            <p style="margin-top: 10px; color: #6c757d;">Tidak ada foto bukti</p>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
