@@ -212,7 +212,7 @@
                                         <span class="badge badge-custom bg-primary">{{$row->Level->name}}</span>
                                     </td>
                                     <td>
-                                        <a href="{{url('admin/users/edit/'.$row->id)}}" class="btn btn-info btn-action btn-sm">
+                                        <a href="{{ route('users.edit', $row->id) }}" class="btn btn-info btn-action btn-sm">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
                                         <a href="javascript: void(0);" class="btn btn-danger btn-action btn-sm btn-delete" title="Delete Data" user-id="{{$row->id}}">
