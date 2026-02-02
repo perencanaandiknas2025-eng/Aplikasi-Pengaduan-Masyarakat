@@ -14,6 +14,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Users</a></li>
                             <li class="breadcrumb-item active">Edit User</li>
                         </ol>
                     </div>
@@ -23,7 +24,7 @@
         <div class="row">
             <div class="col-12">
                 
-                <a href="{{route('users.index')}}" class="button"><i class="bx bx-arrow-back label-icon"></i> &nbsp;&nbsp;Kembali Ke Daftar User</a>
+                <a href="{{route('users.index')}}" class="btn btn-secondary"><i class="bx bx-arrow-back"></i> Kembali Ke Daftar User</a>
                 <br>
                 <br>
                 @if ($errors->any())
@@ -47,8 +48,9 @@
         </div>
         <br>
         <div class="row">
-            <form action="{{url('admin/users/update/'.$user->id)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="col-12">
                     <div class="row">
                         <div class="col-xl-8">
@@ -83,6 +85,10 @@
                                         <div class="col-md-10">
                                             <input class="form-control" type="file" id="photo" name="photo">
                                             <small><span>(Lewati Jika Tidak Diubah)</span></small>
+                                            @if($user->photo)
+                                                <br><br>
+                                                <img src="{{ asset('assets/avatar/' . $user->photo) }}" alt="Current Photo" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
@@ -115,8 +121,8 @@
                                         Mohon lengkapi form yang sudah di sediakan untuk dapat melanjutkan proses !
                                     </div>
                                     <br>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <a href="{{route('users.index')}}" class="btn btn-danger">Cancel</a>
+                                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                                    <a href="{{route('users.index')}}" class="btn btn-secondary w-100 mt-2">Cancel</a>
                                 </div>
                             </div>
                         </div>
