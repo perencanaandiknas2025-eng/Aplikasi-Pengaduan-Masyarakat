@@ -169,7 +169,7 @@ class FrontendController extends Controller
             if (Session::get('nik') != NULL) {
                 $nik = Session::get('nik');
                 $complaints = Complaint::where('nik', $nik)
-                    ->with(['Society', 'Response'])
+                    ->with(['Society', 'Response', 'Category'])
                     ->orderBy('created_at', 'desc')
                     ->get();
 
