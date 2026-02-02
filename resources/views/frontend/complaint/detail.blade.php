@@ -71,7 +71,18 @@
                                                 <tr>
                                                     <td>Kategori</td>
                                                     <td>
-                                                        <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{$complaint->Category ? $complaint->Category->name : 'N/A'}}</a>
+                                                        @php
+                                                            $categories = [
+                                                                1 => 'Fasilitas Sekolah',
+                                                                2 => 'Kurikulum dan Pembelajaran',
+                                                                3 => 'Tenaga Pendidik',
+                                                                4 => 'Administrasi',
+                                                                5 => 'Keamanan',
+                                                                6 => 'Lainnya'
+                                                            ];
+                                                            $categoryName = $complaint->Category ? $complaint->Category->name : ($complaint->category_id && isset($categories[$complaint->category_id]) ? $categories[$complaint->category_id] : 'N/A');
+                                                        @endphp
+                                                        <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{ $categoryName }}</a>
                                                     </td>
                                                 </tr>
                                                 <tr>

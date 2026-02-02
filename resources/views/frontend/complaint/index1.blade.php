@@ -337,7 +337,20 @@
                     <tr role="row">
                         <td role="cell" scope="row" itemprop="position">{{$loop->iteration}}</td>
                         <td role="cell" itemprop="author">{{ $row->society ? $row->society->name : 'N/A' }}</td>
-                        <td role="cell">{{ $row->Category ? $row->Category->name : 'N/A' }}</td>
+                        <td role="cell">
+                            @php
+                                $categories = [
+                                    1 => 'Fasilitas Sekolah',
+                                    2 => 'Kurikulum dan Pembelajaran',
+                                    3 => 'Tenaga Pendidik',
+                                    4 => 'Administrasi',
+                                    5 => 'Keamanan',
+                                    6 => 'Lainnya'
+                                ];
+                                $categoryName = $row->Category ? $row->Category->name : ($row->category_id && isset($categories[$row->category_id]) ? $categories[$row->category_id] : 'N/A');
+                            @endphp
+                            {{ $categoryName }}
+                        </td>
                         <td role="cell">
                             @if($row->photo && !empty($row->photo) && file_exists(public_path('avatar_complaint/' . $row->photo)))
                                 <img src="{{asset('avatar_complaint/' . $row->photo)}}"
