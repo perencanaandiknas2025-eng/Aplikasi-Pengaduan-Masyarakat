@@ -12,7 +12,7 @@ class ReportController extends Controller
 {
     public function day()
     {
-        $data['data'] = Complaint::all();
+        $data['data'] = Complaint::with('society')->get();
         return view('admin.report.day.index', $data);
     }
 
@@ -20,7 +20,8 @@ class ReportController extends Controller
     {
         $date1 = Request::get('date1');
         $date2 = Request::get('date2');
-        $query = DB::table('complaint')->whereBetween('date_complaint', [$date1, $date2])
+        $query = Complaint::with('society')
+            ->whereBetween('date_complaint', [$date1, $date2])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -33,7 +34,7 @@ class ReportController extends Controller
     {
         $date1 = Request::get('date1');
         $date2 = Request::get('date2');
-        $query = DB::table('complaint')
+        $query = Complaint::with('society')
             ->whereBetween('date_complaint', [$date1, $date2])
             ->orderBy('id', 'asc')
             ->get();

@@ -1,0 +1,4 @@
+/* Override breadcrumb divider to remove themesbrand.com placeholder */
+:root {
+  --bs-breadcrumb-divider: "/";
+}

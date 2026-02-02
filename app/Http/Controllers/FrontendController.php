@@ -23,6 +23,7 @@ class FrontendController extends Controller
             'nik' => 'required|min:2|max:20',
             'name' => 'required|min:2|max:20',
             'username' => 'required',
+            'email' => 'required',
             'phone_number' => 'required',
             'address' => 'required',
             'photo' => 'required',
@@ -32,6 +33,7 @@ class FrontendController extends Controller
         $society->nik = $request->nik;
         $society->name = $request->name;
         $society->username = $request->username;
+        $society->email = $request->email;
         $society->phone_number = $request->phone_number;
         $society->address = $request->address;
 
@@ -68,6 +70,7 @@ class FrontendController extends Controller
                 Session::put('nik', $society->nik);
                 Session::put('name', $society->name);
                 Session::put('username', $society->username);
+                 Session::put('email', $society->email);
                 Session::put('photo', $society->photo);
                 Session::put('phone_number', $society->phone_number);
                 Session::put('address', $society->address);
@@ -85,6 +88,12 @@ class FrontendController extends Controller
         if (Session::get('nik') != NULL) {
             $nik = Session::get('nik');
             $data['count_complaint'] = Complaint::where('nik', $nik)->count();
+            $data['count_process'] = Complaint::where('nik', $nik)->where('status', 'process')->count();
+            $data['count_completed'] = Complaint::where('nik', $nik)->where('status', 'finished')->count();
+            $data['complaints'] = Complaint::where('nik', $nik)
+                ->with(['Society', 'Response'])
+                ->orderBy('created_at', 'desc')
+                ->get();
             return view('frontend.complaint.index', $data);
         } else {
             return redirect('/');
@@ -110,7 +119,7 @@ class FrontendController extends Controller
     {
         $this->validate($request, [
             'contents_of_the_report' => 'required|min:2',
-            'photo' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $nik = Session::get('nik');
         $society = Session::get('society_id');
@@ -133,17 +142,25 @@ class FrontendController extends Controller
         $response->complaint_id = $complaint_id;
         $response->save();
 
-        return redirect()->back()->with(['success' => 'Complaint has been saved !']);
+        return redirect()->route('user_home')->with(['success' => 'Complaint has been saved !']);
     }
     public function complaint()
     {
-        if (Session::get('nik') != NULL) {
-            # code...
-            $nik = Session::get('nik');
-            $data['complaint'] = Complaint::where('nik', $nik)->get();
-            return view('frontend.complaint.index1', $data);
-        } else {
-            return redirect('/');
+        try {
+            if (Session::get('nik') != NULL) {
+                $nik = Session::get('nik');
+                $complaints = Complaint::where('nik', $nik)
+                    ->with(['Society', 'Response'])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+                return view('frontend.complaint.index1', compact('complaints'));
+            } else {
+                return redirect('/')->with('error', 'Silakan login terlebih dahulu');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error loading complaint history: ' . $e->getMessage());
+            return redirect('/')->with('error', 'Terjadi kesalahan saat memuat data pengaduan');
         }
     }
     public function detail_complaint($id)
@@ -155,5 +172,23 @@ class FrontendController extends Controller
         } else {
             return redirect('/');
         }
+    }
+
+    public function search_complaint(Request $request)
+{
+    $this->validate($request, [
+        'nik' => 'required|min:2|max:20',
+    ]);
+    
+    $nik = $request->nik;
+    $data['complaints'] = Complaint::with('society')->where('nik', $nik)->get();
+    $data['search_nik'] = $nik;
+    
+    return view('frontend.search_result', $data);
+}
+
+    public function track_complaint()
+    {
+        return view('frontend.track_complaint');
     }
 }

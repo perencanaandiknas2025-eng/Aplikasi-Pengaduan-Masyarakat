@@ -29,7 +29,7 @@
                                 </span>
                             </a>
 
-                            <a href="index.html" class="logo logo-light">
+                            <a href="{{url('user/home')}}" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="{{asset('assets/images/logo-light.svg')}}" alt="" height="22">
                                 </span>
@@ -103,44 +103,39 @@
                     <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
 
                         <div class="collapse navbar-collapse" id="topnav-menu-content">
-                            <ul class="navbar-nav">
+                            <ul class="navbar-nav custom-nav-menu">
 
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button"
-                                    >
-                                        <i class="bx bx-home-circle me-2"></i><span key="t-dashboards">Dashboards</span> <div class="arrow-down"></div>
+                                <li class="nav-item menu-item">
+                                    <a class="nav-link menu-link" href="{{url('user/home')}}">
+                                        <i class="bx bx-home-circle me-2"></i>
+                                        <span class="menu-text">Dashboard</span>
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-
-                                        <a href="{{url('user/home')}}" class="dropdown-item" key="t-default">Default</a>
-                                        
-                                    </div>
                                 </li>
 
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button"
-                                    >
-                                        <i class="bx bx-customize me-2"></i><span key="t-apps">Complaints</span> <div class="arrow-down"></div>
+                                <li class="nav-item menu-item dropdown">
+                                    <a class="nav-link menu-link dropdown-toggle" href="#" id="topnav-complaints" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bx bx-customize me-2"></i>
+                                        <span class="menu-text">Pengaduan</span>
+                                        <i class="bx bx-chevron-down dropdown-arrow"></i>
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-                                        <a href="{{route('complaint')}}" class="dropdown-item" key="t-calendar">List Complaints</a>
-
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button"
-                                    >
-                                        <i class="bx bx-customize me-2"></i><span key="t-apps">Add Complaints</span> <div class="arrow-down"></div>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-                                        <a href="{{route('add_complaint')}}" class="dropdown-item" key="t-calendar">Add Complaints</a>
-
-                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="topnav-complaints">
+                                        <li><a class="dropdown-item" href="{{route('complaint')}}">Daftar Pengaduan</a></li>
+                                    </ul>
                                 </li>
 
+                                <li class="nav-item menu-item">
+                                    <a class="nav-link menu-link" href="{{route('add_complaint')}}">
+                                        <i class="bx bx-plus-circle me-2"></i>
+                                        <span class="menu-text">Buat Pengaduan</span>
+                                    </a>
+                                </li>
 
+                                <li class="nav-item menu-item">
+                                    <a class="nav-link menu-link active" href="{{route('complaint')}}">
+                                        <i class="bx bx-history me-2"></i>
+                                        <span class="menu-text">Riwayat Pengaduan</span>
+                                    </a>
+                                </li>
 
                             </ul>
                         </div>
@@ -153,11 +148,18 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Feyto Frizky Dewangga.
+                                <script>document.write(new Date().getFullYear())</script> © Dinas Pendidikan.
                             </div>
                             <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Design & Develop by Feyto Frizky Dewangga
+                                <div class="text-sm-end">
+                                    <div class="social-links">
+                                        <a href="https://www.facebook.com/dinaspendidikan" target="_blank" class="text-muted me-3">
+                                            <i class="bx bxl-facebook"></i>
+                                        </a>
+                                        <a href="https://www.instagram.com/dinaspendidikan" target="_blank" class="text-muted">
+                                            <i class="bx bxl-instagram"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -174,6 +176,42 @@
         <script src="{{asset('assets/libs/apexcharts/apexcharts.min.js')}}"></script>
         <script src="{{asset('assets/js/pages/dashboard.init.js')}}"></script>
         <script src="{{asset('assets/js/app.js')}}"></script>
+        <script>
+            // Fix navigation menu click behavior
+            $(document).ready(function() {
+                // Handle dropdown menu item clicks - ensure immediate navigation
+                $('.dropdown-menu a').on('click', function(e) {
+                    var href = $(this).attr('href');
+                    // Allow normal navigation for actual links
+                    if (href && href !== '#' && href !== 'javascript:void(0)') {
+                        // Force navigation
+                        e.preventDefault();
+                        window.location.href = href;
+                        return false;
+                    }
+                });
+
+                // Ensure dropdown parent links work properly
+                $('.nav-link.dropdown-toggle').on('click', function(e) {
+                    var href = $(this).attr('href');
+                    // Only prevent default if href is # and it's meant to be a dropdown toggle
+                    if (href === '#') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $(this).parent().toggleClass('show');
+                        $(this).next('.dropdown-menu').toggleClass('show');
+                    }
+                });
+
+                // Close dropdown when clicking outside
+                $(document).on('click', function(e) {
+                    if (!$(e.target).closest('.nav-item.dropdown').length) {
+                        $('.nav-item.dropdown').removeClass('show');
+                        $('.dropdown-menu').removeClass('show');
+                    }
+                });
+            });
+        </script>
     </body>
     @stack('script')
 </html>

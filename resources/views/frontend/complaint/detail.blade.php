@@ -1,5 +1,5 @@
 @extends('frontend.layouts.main')
-@section('title','Detail Complaint')
+@section('title','Detail Pengaduan')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -8,11 +8,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">Detail Complaint</h4>
+                    <h4 class="mb-sm-0 font-size-18">Detail Pengaduan</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item active">Detail Complaint</li>
+                            <li class="breadcrumb-item active">Detail Pengaduan</li>
                         </ol>
                     </div>
 
@@ -49,7 +49,7 @@
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Detail Complaint</h4>
+                                    <h4 class="card-title">Detail Pengaduan</h4>
                                         
         
                                         <div class="table-responsive">
@@ -69,37 +69,37 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Phone Number</td>
+                                                    <td>Nomor Telepon</td>
                                                     <td>
                                                         <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{$complaint->Society->phone_number}}</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Date</td>
+                                                    <td>Tanggal</td>
                                                     <td>
-                                                        <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{date('d F Y H:i:s',strtotime($complaint->created_at))}}</a>
+                                                        <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{\Carbon\Carbon::parse($complaint->created_at)->format('d F Y H:i:s')}}</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Status</td>
                                                     <td>
                                                         @if ($complaint->status == '0')
-                                                            <span class="badge rounded-pill bg-danger">Unprocess</span>
+                                                            <span class="badge rounded-pill bg-danger">Belum Diproses</span>
                                                         @elseif($complaint->status == "process")
-                                                            <span class="badge rounded-pill bg-primary">Process</span>
+                                                            <span class="badge rounded-pill bg-primary"><i class="bx bx-loader-alt bx-spin" style="margin-right: 4px;"></i>Proses</span>
                                                         @else
-                                                            <span class="badge rounded-pill bg-success">Finished</span>
+                                                            <span class="badge rounded-pill bg-success">Selesai</span>
                                                         @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Photo</td>
+                                                    <td>Foto</td>
                                                     <td>
                                                         <img src="{{url('avatar_complaint/',$complaint->photo)}}" width="500px">
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Content Of The Report</td>
+                                                    <td>Isi Pengaduan</td>
                                                     <td>
                                                         <a href="javascript::void(0)" id="inline-username" data-type="text" data-pk="1" data-title="Enter username">{{$complaint->contents_of_the_report}}</a>
                                                     </td>
