@@ -56,6 +56,10 @@
                                         <td>{{ $complaint->nik }}</td>
                                     </tr>
                                     <tr>
+                                        <td>Kategori</td>
+                                        <td>{{ $complaint->Category->name ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Nomor Telepon</td>
                                         <td>{{ $complaint->Society->phone_number }}</td>
                                     </tr>

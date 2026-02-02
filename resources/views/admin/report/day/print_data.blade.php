@@ -99,6 +99,7 @@
                         <th>No</th>
                         <th>NIK</th>
                         <th>Nama Pelapor</th>
+                        <th>Kategori</th>
                         <th>Pengaduan</th>
                         <th>Foto</th>
                         <th>Tanggal</th>
@@ -111,6 +112,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nik}}</td>
                         <td>{{$item->society->name ?? 'N/A'}}</td>
+                        <td>{{$item->Category->name ?? 'N/A'}}</td>
                         <td>{{$item->contents_of_the_report}}</td>
                         <td style="text-align: center;">
                             @if($item->photo && !empty($item->photo) && file_exists(public_path('avatar_complaint/' . $item->photo)))

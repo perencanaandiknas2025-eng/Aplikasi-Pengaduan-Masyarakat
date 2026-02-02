@@ -20,10 +20,15 @@ class ReportController extends Controller
     {
         $date1 = Request::get('date1');
         $date2 = Request::get('date2');
-        $query = Complaint::with('society')
-            ->whereBetween('date_complaint', [$date1, $date2])
-            ->orderBy('id', 'desc')
-            ->get();
+        $category_id = Request::get('category_id');
+        $query = Complaint::with(['society', 'Category'])
+            ->whereBetween('date_complaint', [$date1, $date2]);
+        
+        if ($category_id) {
+            $query->where('category_id', $category_id);
+        }
+        
+        $query = $query->orderBy('id', 'desc')->get();
 
         $data['data']   =   $query;
 
@@ -34,10 +39,15 @@ class ReportController extends Controller
     {
         $date1 = Request::get('date1');
         $date2 = Request::get('date2');
-        $query = Complaint::with('society')
-            ->whereBetween('date_complaint', [$date1, $date2])
-            ->orderBy('id', 'asc')
-            ->get();
+        $category_id = Request::get('category_id');
+        $query = Complaint::with(['society', 'Category'])
+            ->whereBetween('date_complaint', [$date1, $date2]);
+        
+        if ($category_id) {
+            $query->where('category_id', $category_id);
+        }
+        
+        $query = $query->orderBy('id', 'asc')->get();
 
         $data['data']   =   $query;
         $view = view('admin.report.day.print_data', $data)->render();

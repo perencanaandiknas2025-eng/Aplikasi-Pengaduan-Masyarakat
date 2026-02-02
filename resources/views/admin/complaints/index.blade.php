@@ -179,6 +179,7 @@
                                     <th>No</th>
                                     <th>Foto</th>
                                     <th>Nama</th>
+                                    <th>Kategori</th>
                                     <th>Tanggal</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
@@ -195,6 +196,7 @@
                                                  style="width: 80px; height: 60px; object-fit: cover;">
                                         </td>
                                         <td>{{ $row->Society->name ?? 'Anonim' }}</td>
+                                        <td>{{ $row->Category->name ?? 'N/A' }}</td>
                                         <td>{{ $row->created_at->format('d M Y H:i') }}</td>
                                         <td>
                                             @if ($row->status == "0")

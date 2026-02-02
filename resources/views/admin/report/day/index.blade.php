@@ -299,13 +299,24 @@
                                                 <input class="form-control" type="date" id="date2" name="date2" value="{{Request::get('date2')}}">
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label for="category_id">Kategori</label>
+                                                <select class="form-control" id="category_id" name="category_id">
+                                                    <option value="">Semua Kategori</option>
+                                                    @foreach(\App\Models\Category::all() as $category)
+                                                        <option value="{{ $category->id }}" {{ Request::get('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-custom btn-primary-custom" type="submit">
                                             <i class="bx bx-search"></i> Cari Laporan
                                         </button>
                                         @if(Request::get('date1') && Request::get('date2'))
-                                        <a href="{{url('admin/report/day/cetakpdf/?date1='.Request::get('date1').'&date2='.Request::get('date2'))}}" class="btn btn-custom btn-secondary-custom" target="_blank">
+                                        <a href="{{url('admin/report/day/cetakpdf/?date1='.Request::get('date1').'&date2='.Request::get('date2').'&category_id='.Request::get('category_id'))}}" class="btn btn-custom btn-secondary-custom" target="_blank">
                                             <i class="bx bx-file"></i> Export PDF
                                         </a>
                                         @endif
