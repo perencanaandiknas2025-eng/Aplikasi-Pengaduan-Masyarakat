@@ -18,9 +18,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'officer_name',
         'email',
+        'username',
         'password',
+        'phone_number',
+        'photo',
+        'level_id',
     ];
 
     /**
@@ -41,6 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the name of the unique identifier for the user.
+     *
+     * @return string
+     */
+    public function getAuthIdentifierName()
+    {
+        return 'username';
+    }
 
     public function Level()
     {
