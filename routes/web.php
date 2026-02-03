@@ -25,13 +25,16 @@ Route::post('user/login/cek', [FrontendController::class, 'postlogin'])->name('p
 Route::get('user/logout', [FrontendController::class, 'logout'])->name('user_logout');
 
 // --- User Routes ---
-Route::get('user/home', [FrontendController::class, 'home'])->name('user_home');
-Route::get('user/complaint/add', [FrontendController::class, 'add_complaint'])->name('add_complaint');
-Route::post('user/complaint/save', [FrontendController::class, 'save_complaint'])->name('save_complaint');
-Route::get('user/complaint', [FrontendController::class, 'complaint'])->name('complaint');
-Route::get('user/complaint/detail/{id}', [FrontendController::class, 'detail_complaint'])->name('detail_complaint');
-Route::get('track-complaint', [FrontendController::class, 'track_complaint'])->name('track_complaint');
-Route::post('search-complaint', [FrontendController::class, 'search_complaint'])->name('search_complaint');
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('user/home', [FrontendController::class, 'home'])->name('user_home');
+    Route::get('user/complaint/add', [FrontendController::class, 'add_complaint'])->name('add_complaint');
+    Route::post('user/complaint/save', [FrontendController::class, 'save_complaint'])->name('save_complaint');
+    Route::get('user/complaint', [FrontendController::class, 'complaint'])->name('complaint');
+    Route::get('user/complaint/detail/{id}', [FrontendController::class, 'detail_complaint'])->name('detail_complaint');
+    Route::get('user/my-complaints', [FrontendController::class, 'my_complaints'])->name('my_complaints');
+    Route::get('track-complaint', [FrontendController::class, 'track_complaint'])->name('track_complaint');
+    Route::post('search-complaint', [FrontendController::class, 'search_complaint'])->name('search_complaint');
+});
 
 // --- Admin Login ---
 Route::get('admin/login', [LoginController::class, 'showFormLogin'])->name('login');
@@ -45,6 +48,7 @@ Route::group(['middleware' => ['auth', 'checkRole:1,2'], 'prefix' => 'admin'], f
 
     // ✅ COMPLAINTS (CRUD lengkap)
     Route::resource('complaints', ComplaintController::class);
+    Route::get('complaints-export', [ComplaintController::class, 'export'])->name('complaints.export');
 
     // Tambahan (tidak bentrok resource)
     Route::get('complaints/detail/{id}', [ComplaintController::class, 'detail']);

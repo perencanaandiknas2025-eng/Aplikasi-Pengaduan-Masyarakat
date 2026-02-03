@@ -6,30 +6,45 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            font-size: 12px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            page-break-inside: avoid;
+            border: none;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: none;
             padding: 8px;
             text-align: left;
+            word-wrap: break-word;
+        }
+        tbody th, tbody td, thead th {
+            border: 1px solid #000;
         }
         th {
             background-color: #f2f2f2;
             font-weight: bold;
+            font-size: 11px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        td {
+            font-size: 10px;
+            vertical-align: top;
         }
         .success {
             background-color: #d4edda !important;
         }
         .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 2px 6px;
+            border-radius: 8px;
             color: white;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
+            display: inline-block;
         }
         .bg-danger {
             background-color: #dc3545;
@@ -43,58 +58,69 @@
         h3 {
             margin: 5px 0;
             color: #333;
+            font-size: 14px;
         }
         p {
             margin: 5px 0;
+            font-size: 11px;
         }
-        .stats-table {
-            margin: 20px 0;
+        thead tr td {
+            border: none !important;
         }
-        .stats-table td {
-            padding: 10px;
-            text-align: center;
+        thead tr {
+            border: none !important;
+        }
+        thead {
+            border: none !important;
+        }
+        @media print {
+            body {
+                margin: 15mm;
+                font-size: 11px;
+            }
+            table {
+                page-break-inside: avoid;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            th, td {
+                padding: 6px;
+            }
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
      <center>
-<table style="text-align: center;">
-    <tr>
-        <td><img src=""></td>
-        
-        <td><img src=""></td>
-    </tr>
-</table>
 </center>
 <br>
-<table class="table table-hover table-striped table-bordered text-center" cellspacing="0" width="100%" border="1">
+<table class="table table-hover table-striped text-center" cellspacing="0" width="100%">
                 <thead>
-                    <tr class="success"><th colspan="7" style="text-align: center"></th></tr>
-
-                    <tr class="success"><td colspan="7" style="font-family: sans-serif;text-align: center;">
-
-                        <div style="text-align: center;">
-                            <h3>LAPORAN</h3>
-                            <h3>CERDIK</h3>
-                            <h3>Center for Education Reporting & Digital Complaints</h3>
-                            <h4>(Pusat Pelaporan dan Pengaduan Digital Pendidikan)</h4>
+                    <tr style="border: none;"><td colspan="8" style="font-family: sans-serif;text-align: center; padding: 20px 10px; border: none;">
+                        <div style="text-align: center; margin: 30px 0 10px 0;">
+                            <h3 style="margin: 5px 0; text-align: center; font-size: 16px;">LAPORAN</h3>
+                            <h3 style="margin: 5px 0; text-align: center; font-size: 16px;">CERDIK</h3>
+                            <h3 style="margin: 5px 0; text-align: center; font-size: 14px;">Center for Education Reporting & Digital Complaints</h3>
+                            <h4 style="margin: 5px 0; text-align: center; font-size: 12px;">(Pusat Pelaporan dan Pengaduan Digital Pendidikan)</h4>
                             @if(Request::get('date1') && Request::get('date2'))
-                            <p style="margin: 10px 0; font-size: 14px;">Periode: {{Request::get('date1')}} - {{Request::get('date2')}}</p>
+                            <p style="margin: 10px 0; font-size: 12px; text-align: center;">Periode: {{Request::get('date1')}} - {{Request::get('date2')}}</p>
                             @endif
                         </div>
                     </td></tr>
 
-                    <tr class="success"><td colspan="7" style="font-family: sans-serif;text-align: left; padding: 10px;">
-                        <table class="stats-table">
-                            <tr>
-                                <td style="padding: 5px;"><strong>Total Laporan:</strong> {{count($data)}}</td>
-                                <td style="padding: 5px;"><strong>Belum Diproses:</strong> {{count($data->where('status', '0'))}}</td>
-                                <td style="padding: 5px;"><strong>Sedang Diproses:</strong> {{count($data->where('status', 'process'))}}</td>
-                                <td style="padding: 5px;"><strong>Selesai:</strong> {{count($data->where('status', 'finished'))}}</td>
-                            </tr>
-                        </table>
+                    <tr style="border: none;"><td colspan="8" style="font-family: sans-serif;text-align: center; padding: 10px; border: none;">
+                        <p style="margin: 0; font-size: 12px; text-align: center;">
+                            <strong>Total Laporan:</strong> {{count($data)}} | 
+                            <strong>Belum Diproses:</strong> {{count($data->where('status', '0'))}} | 
+                            <strong>Sedang Diproses:</strong> {{count($data->where('status', 'process'))}} | 
+                            <strong>Selesai:</strong> {{count($data->where('status', 'finished'))}}
+                        </p>
                     </td></tr>
-                    <tr class="success"><th colspan="7" style="text-align: center"></th></tr>
+
                     <tr>
                         <th>No</th>
                         <th>NIK</th>
@@ -111,9 +137,9 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nik}}</td>
-                        <td>{{$item->society->name ?? 'N/A'}}</td>
-                        <td>{{$item->Category->name ?? 'N/A'}}</td>
-                        <td>{{$item->contents_of_the_report}}</td>
+                        <td style="max-width: 100px; word-wrap: break-word;">{{$item->society->name ?? 'N/A'}}</td>
+                        <td style="max-width: 100px; word-wrap: break-word;">{{$item->Category->name ?? 'N/A'}}</td>
+                        <td style="max-width: 150px; word-wrap: break-word;">{{$item->contents_of_the_report}}</td>
                         <td style="text-align: center;">
                             @if($item->photo && !empty($item->photo) && file_exists(public_path('avatar_complaint/' . $item->photo)))
                                 <img src="{{ public_path('avatar_complaint/' . $item->photo) }}" 

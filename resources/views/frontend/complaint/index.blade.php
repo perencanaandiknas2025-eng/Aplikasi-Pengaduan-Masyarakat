@@ -178,7 +178,7 @@
         </div>
         <div>
             <h2>Halo, {{ Session::get('name') ?? 'Pengguna' }}</h2>
-            <div>Selamat datang di Dashboard Pengaduan Masyarakat Dinas Pendidikan</div>
+            <div>Selamat datang di Dashboard CERDIK<br>Center for Education Reporting & Digital Complaints</div>
             <div class="mt-2 p-3 bg-white rounded shadow-sm" style="font-size:1rem;color:#333;max-width:400px;">
                 <div class="user-info-grid">
                     <div class="info-row">
@@ -228,7 +228,7 @@
     <!-- QUICK ACTIONS / INFO -->
     <div class="dashboard-action">
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between" style="gap:12px;">
-            <div style="font-size:1.1rem;font-weight:500;color:var(--primary);">Ingin membuat pengaduan baru? Klik tombol di bawah ini.</div>
+            <div style="font-size:1.1rem;font-weight:500;color:var(--primary);">Ingin membuat pengaduan baru? Klik tombol di samping ini.</div>
             <a href="{{ route('add_complaint') }}" class="btn btn-primary">Buat Pengaduan</a>
         </div>
     </div>

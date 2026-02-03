@@ -10,9 +10,19 @@ use File;
 
 class SocietyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data['society'] = Society::all();
+        $filter = $request->get('filter');
+        if ($filter == 'active') {
+            $society = Society::whereHas('complaints')->get();
+        } elseif ($filter == 'inactive') {
+            $society = Society::whereDoesntHave('complaints')->get();
+        } else {
+            $society = Society::all();
+        }
+        $data['society'] = $society;
+        $data['active_society'] = Society::whereHas('complaints')->count();
+        $data['inactive_society'] = Society::whereDoesntHave('complaints')->count();
         return view('admin.society.index', $data);
     }
 
@@ -24,14 +34,14 @@ class SocietyController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nik' => 'required|min:2|max:20',
-            'username' => 'required|min:2|max:20',
-            'email' => 'required|min:2',
+            'nik' => 'required|min:2|max:20|unique:society,nik',
+            'username' => 'required|min:2|max:20|unique:society,username',
+            'email' => 'required|email|unique:society,email',
             'name' => 'required|min:2|max:20',
             'password' => 'required|min:5|max:20',
             'phone_number' => 'required',
             'address' => 'required',
-            'photo' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $society = new Society;
         $society->nik = $request->nik;
@@ -56,7 +66,13 @@ class SocietyController extends Controller
     public function destroy($id)
     {
         $society = Society::findOrFail($id);
+        if ($society->photo && File::exists('avatar_society/' . $society->photo)) {
+            File::delete('avatar_society/' . $society->photo);
+        }
         $society->delete();
+        if (request()->ajax()) {
+            return response()->json(['success' => 'Society has been deleted']);
+        }
         return redirect()->back()->with(['success' => 'Society has been deleted']);
     }
 
@@ -69,9 +85,9 @@ class SocietyController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nik' => 'required|min:2|max:20',
-            'username' => 'required|min:2',
-            'email' => 'required|min:2|max:20',
+            'nik' => 'required|min:2|max:20|unique:society,nik,'.$id,
+            'username' => 'required|min:2|unique:society,username,'.$id,
+            'email' => 'required|email|unique:society,email,'.$id,
             'name' => 'required|min:2|max:20',
             'phone_number' => 'required',
             'address' => 'required',
@@ -86,7 +102,7 @@ class SocietyController extends Controller
         if ($request->get('password') != '') {
             $society->password = Hash::make($request->password);
         }
-        if ($request->file('photo') != '') {
+        if ($request->hasFile('photo')) {
             File::delete('avatar_society/' . $society->photo);
             $photo = $request->file('photo');
             $tujuan_upload = 'avatar_society';

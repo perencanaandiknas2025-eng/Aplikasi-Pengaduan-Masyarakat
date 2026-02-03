@@ -141,8 +141,8 @@
                     <div class="stats-icon">
                         <i class="bx bx-user-check"></i>
                     </div>
-                    <div class="stats-number">{{ $society->whereNotNull('photo')->count() }}</div>
-                    <div class="stats-label">Dengan Foto</div>
+                    <div class="stats-number">{{ $active_society }}</div>
+                    <div class="stats-label">Masyarakat Aktif (Pernah Mengadu)</div>
                 </div>
             </div>
             <div class="col-xl-4 col-md-6">
@@ -150,8 +150,8 @@
                     <div class="stats-icon">
                         <i class="bx bx-user-x"></i>
                     </div>
-                    <div class="stats-number">{{ $society->whereNull('photo')->count() }}</div>
-                    <div class="stats-label">Tanpa Foto</div>
+                    <div class="stats-number">{{ $inactive_society }}</div>
+                    <div class="stats-label">Masyarakat Tidak Aktif (Belum Pernah Mengadu)</div>
                 </div>
             </div>
         </div>
@@ -176,6 +176,17 @@
             <div class="col-12">
                 <div class="table-card">
                     <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <form method="GET" action="{{ route('society.index') }}">
+                                    <select name="filter" class="form-control" onchange="this.form.submit()">
+                                        <option value="">Semua Masyarakat</option>
+                                        <option value="active" {{ request('filter') == 'active' ? 'selected' : '' }}>Pernah Mengadu</option>
+                                        <option value="inactive" {{ request('filter') == 'inactive' ? 'selected' : '' }}>Tidak Pernah Mengadu</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
                         <table id="datatable" class="table table-hover dt-responsive nowrap w-100">
                             <thead>
                             <tr>
@@ -204,7 +215,7 @@
                                     <td>{{$row->phone_number}}</td>
                                     <td>{{$row->address}}</td>
                                     <td>
-                                        <a href="{{url('admin/society/edit/'.$row->id)}}" class="btn btn-info btn-action btn-sm">
+                                        <a href="{{ route('society.edit', $row->id) }}" class="btn btn-info btn-action btn-sm">
                                             <i class="bx bx-edit"></i> Edit
                                         </a>
                                         <a href="javascript: void(0);" class="btn btn-danger btn-action btn-sm btn-delete" title="Delete Data" society-id="{{$row->id}}">
@@ -252,17 +263,37 @@
         cancelButtonClass:"btn btn-danger ms-2 mt-2",
         buttonsStyling:!1}).then((result) => {
         if (result.isConfirmed) {
-            window.location = "{{url('admin/society/delete')}}/"+society_id+"";
-        } else if (
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
+            $.ajax({
+                url: "{{url('admin/society')}}/"+society_id,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Society has been deleted.',
+                        'success'
+                    ).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire(
+                        'Error!',
+                        'Failed to delete society.',
+                        'error'
+                    );
+                }
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
             swalWithBootstrapButtons.fire(
-            'Cancelled',
-            'Your imaginary file is safe :)',
-            'error'
-            )
+                'Cancelled',
+                'Your data is safe :)',
+                'error'
+            );
         }
-        })
+        });
     });
     $(document).ready(function() {
         $(document).on('click', '#set_dtl', function() {

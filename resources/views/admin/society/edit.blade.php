@@ -207,6 +207,11 @@
                                                 <label for="photo">Foto Profil</label>
                                                 <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
                                                 <small class="text-muted">(Lewati jika tidak diubah)</small>
+                                                @if($society->photo)
+                                                    <div class="mt-2">
+                                                        <img src="{{asset('avatar_society/'.$society->photo)}}" alt="Foto Profil" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

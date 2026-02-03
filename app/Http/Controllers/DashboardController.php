@@ -21,9 +21,11 @@ class DashboardController extends Controller
         $data['tahun'] = DB::table("complaint")->select(DB::raw('EXTRACT(YEAR FROM date_complaint) AS Tahun, COUNT(id) as pay_total'))
             ->groupBy(DB::raw('EXTRACT(YEAR FROM date_complaint)'))
             ->get();
-        // $data['tanggal'] = DB::table("complaint")->select(DB::raw('EXTRACT(DATE FROM date_complaint) AS Date, COUNT(id) as pay_total'))
-        //     ->groupBy(DB::raw('EXTRACT(DATE FROM date_complaint)'))
-        //     ->get();
+        $data['categories'] = DB::table("complaint")
+            ->join('categories', 'complaint.category_id', '=', 'categories.id')
+            ->select('categories.name', DB::raw('COUNT(complaint.id) as count'))
+            ->groupBy('categories.name')
+            ->get();
 
         return view('admin.dashboards.index', $data);
     }

@@ -119,6 +119,60 @@
             </div>
         </div>
 
+        <!-- Filter Form -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Filter Pengaduan</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="GET" action="{{ route('complaints.index') }}" class="row g-3">
+                            <div class="col-md-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select name="status" id="status" class="form-select">
+                                    <option value="">Semua Status</option>
+                                    <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Belum Diproses</option>
+                                    <option value="process" {{ request('status') == 'process' ? 'selected' : '' }}>Proses</option>
+                                    <option value="finished" {{ request('status') == 'finished' ? 'selected' : '' }}>Selesai</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="category_id" class="form-label">Kategori</label>
+                                <select name="category_id" id="category_id" class="form-select">
+                                    <option value="">Semua Kategori</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="date_from" class="form-label">Dari Tanggal</label>
+                                <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request('date_from') }}">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="date_to" class="form-label">Sampai Tanggal</label>
+                                <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request('date_to') }}">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bx bx-search"></i> Filter
+                                </button>
+                                <a href="{{ route('complaints.index') }}" class="btn btn-secondary me-2">
+                                    <i class="bx bx-reset"></i> Reset
+                                </a>
+                                <a href="{{ route('complaints.export', request()->query()) }}" class="btn btn-success">
+                                    <i class="bx bx-download"></i> Export CSV
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Alert Success -->
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

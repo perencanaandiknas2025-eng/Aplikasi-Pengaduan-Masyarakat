@@ -22,7 +22,7 @@ return [
 
     'timezone' => 'Asia/Jayapura',
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     'fallback_locale' => 'en',
 

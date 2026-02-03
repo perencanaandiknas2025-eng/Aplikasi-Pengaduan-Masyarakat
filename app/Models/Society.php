@@ -12,4 +12,9 @@ class Society extends Model
     protected $table = 'society';
     protected $primaryKey = 'id';
     protected $guarded = [];
+
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'society_id', 'id');
+    }
 }

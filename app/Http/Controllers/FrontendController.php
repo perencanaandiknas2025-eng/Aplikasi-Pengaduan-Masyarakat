@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ComplaintCreated;
 use App\Models\Complaint;
 use App\Models\Response;
 use App\Models\Society;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Date;
 
@@ -21,13 +23,13 @@ class FrontendController extends Controller
     public function save(Request $request)
     {
         $this->validate($request, [
-            'nik' => 'required|min:2|max:20',
+            'nik' => 'required|min:2|max:20|unique:society,nik',
             'name' => 'required|min:2|max:20',
-            'username' => 'required',
-            'email' => 'required',
+            'username' => 'required|unique:society,username',
+            'email' => 'required|email|unique:society,email',
             'phone_number' => 'required',
             'address' => 'required',
-            'photo' => 'required',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'password' => 'required|min:6|max:20',
         ]);
         $society = new Society;
@@ -132,15 +134,15 @@ class FrontendController extends Controller
     {
         $this->validate($request, [
             'contents_of_the_report' => 'required|min:2',
-            'category_id' => 'required|integer',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $nik = Session::get('nik');
-        $society = Session::get('society_id');
         $complaint = new Complaint;
 
         $complaint->contents_of_the_report = $request->contents_of_the_report;
-        $complaint->category_id = $request->category_id;
+        // Check if category_id column exists
+        if (\Schema::hasColumn('complaint', 'category_id')) {
+            $complaint->category_id = $request->category_id;
+        }
         $photo = $request->file('photo');
         $tujuan_upload = 'avatar_complaint';
         $photo_name = time() . "_" . $photo->getClientOriginalName();
@@ -148,6 +150,8 @@ class FrontendController extends Controller
         $complaint->photo = $photo_name;
         $complaint->status = '0';
         $complaint->date_complaint = Date::now()->format('Y-m-d');
+        $nik = Session::get('nik');
+        $society = Session::get('society_id');
         $complaint->nik = $nik;
         $complaint->society_id = $society;
         try {
@@ -157,6 +161,13 @@ class FrontendController extends Controller
             $response = new Response;
             $response->complaint_id = $complaint_id;
             $response->save();
+
+            // Kirim email notifikasi ke admin
+            try {
+                Mail::to('admin@example.com')->send(new ComplaintCreated($complaint));
+            } catch (\Exception $e) {
+                \Log::error('Error sending email: ' . $e->getMessage());
+            }
 
             return redirect()->route('user_home')->with(['success' => 'Complaint has been saved !']);
         } catch (\Exception $e) {
@@ -172,9 +183,13 @@ class FrontendController extends Controller
                 $complaints = Complaint::where('nik', $nik)
                     ->with(['Society', 'Response', 'Category'])
                     ->orderBy('created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
 
-                return view('frontend.complaint.index1', compact('complaints'));
+                $categories = \Cache::remember('categories', 3600, function () {
+                    return Category::all()->pluck('name', 'id')->toArray();
+                });
+
+                return view('frontend.complaint.index1', compact('complaints', 'categories'));
             } else {
                 return redirect('/')->with('error', 'Silakan login terlebih dahulu');
             }
@@ -188,6 +203,9 @@ class FrontendController extends Controller
         if (Session::get('nik') != NULL) {
             # code...
             $data['complaint'] = Complaint::findOrFail($id);
+            $data['categories'] = \Cache::remember('categories', 3600, function () {
+                return Category::all()->pluck('name', 'id')->toArray();
+            });
             return view('frontend.complaint.detail', $data);
         } else {
             return redirect('/');
@@ -210,5 +228,20 @@ class FrontendController extends Controller
     public function track_complaint()
     {
         return view('frontend.track_complaint');
+    }
+
+    public function my_complaints()
+    {
+        if (!Session::has('society_id')) {
+            return redirect('/user/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $society_id = Session::get('society_id');
+        $data['complaints'] = Complaint::with('Category', 'Response')
+            ->where('society_id', $society_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('frontend.my_complaints', $data);
     }
 }

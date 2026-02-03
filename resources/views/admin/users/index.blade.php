@@ -251,12 +251,12 @@
         })
 
         swalWithBootstrapButtons.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Apakah Anda yakin?',
+        text: "Anda tidak akan dapat mengembalikan ini!",
         icon: 'warning',
         showCancelButton: !0,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Tidak, batalkan!',
         confirmButtonClass:"btn btn-success mt-2",
         cancelButtonClass:"btn btn-danger ms-2 mt-2",
         buttonsStyling:!1}).then((result) => {

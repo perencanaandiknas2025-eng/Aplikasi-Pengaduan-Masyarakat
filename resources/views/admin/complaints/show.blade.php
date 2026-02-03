@@ -129,12 +129,12 @@
         $('.btn-delete').click(function(){
             var society_id = $(this).attr('society-id');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan dapat mengembalikan ini!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Tidak, batalkan!',
                 customClass: { confirmButton: 'btn btn-success mt-2', cancelButton: 'btn btn-danger ms-2 mt-2' },
                 buttonsStyling: false
             }).then((result) => {

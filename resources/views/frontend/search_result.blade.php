@@ -229,8 +229,12 @@
         <i class="icofont-phone"></i> 0813-2869-9687
       </div>
       <div>
-        <i class="icofont-facebook"></i>
-        <i class="icofont-instagram"></i>
+        <a href="https://www.facebook.com/dinaspendidikan" target="_blank" class="text-decoration-none me-2">
+          <i class="icofont-facebook"></i>
+        </a>
+        <a href="https://www.instagram.com/dinaspendidikan" target="_blank" class="text-decoration-none">
+          <i class="icofont-instagram"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -240,7 +244,7 @@
     <div class="container d-flex align-items-center justify-content-between">
       <a href="{{ url('/') }}" class="d-flex align-items-center text-decoration-none">
         <img src="{{ asset('assets/images/logo_sistem.png') }}" class="logo-img">
-        <strong class="text-dark">DINAS PENDIDIKAN</strong>
+        <strong class="text-dark">DINAS PENDIDIKAN<br>HALMAHERA TIMUR</strong>
       </a>
 
       <nav class="nav-menu d-none d-lg-block">
@@ -380,7 +384,7 @@
 
   <!-- ===== FOOTER ===== -->
   <footer id="footer">
-    &copy; {{ date('Y') }} <strong>Dinas Pendidikan</strong>. All Rights Reserved
+    &copy; 2026 <strong>Dinas Pendidikan</strong>. All Rights Reserved
   </footer>
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
